@@ -21,28 +21,6 @@ Year,REF_AREA,Country,Household_type,Measure,INCOME_PRINCIPAL,INCOME_SPOUSE,Net_
 2019,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,67,20.88
 2020,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,67,19.5
 2021,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,67,21.13
-2000,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,34.98
-2001,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,35.32
-2002,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,35.07
-2003,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,33.87
-2004,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,32.88
-2005,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,32.98
-2006,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,32.94
-2007,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,32.98
-2008,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,33.31
-2009,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,33.14
-2010,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,33.93
-2011,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,34.06
-2012,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,33.92
-2013,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,33.5
-2014,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,33.45
-2015,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,33.06
-2016,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,31.46
-2017,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,31.34
-2018,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,30.49
-2019,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,29.82
-2020,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,29.78
-2021,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,67,30.01
 2000,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,67,35.81
 2001,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,67,35.02
 2002,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,67,34.36
@@ -571,28 +549,6 @@ Year,REF_AREA,Country,Household_type,Measure,INCOME_PRINCIPAL,INCOME_SPOUSE,Net_
 2019,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,100,24.77
 2020,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,100,23.65
 2021,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,100,25.08
-2000,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,38.44
-2001,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,38.66
-2002,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,38.39
-2003,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,37.32
-2004,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.5
-2005,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.57
-2006,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.54
-2007,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.57
-2008,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.88
-2009,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.7
-2010,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,37.36
-2011,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,37.45
-2012,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,37.31
-2013,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.94
-2014,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.9
-2015,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,36.58
-2016,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,35.29
-2017,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,35.13
-2018,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,34.45
-2019,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,33.89
-2020,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,33.86
-2021,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,100,34.04
 2000,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,100,38.08
 2001,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,100,37.28
 2002,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,100,36.63
@@ -1121,28 +1077,6 @@ Year,REF_AREA,Country,Household_type,Measure,INCOME_PRINCIPAL,INCOME_SPOUSE,Net_
 2019,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,0,14.95
 2020,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,0,13.24
 2021,AUT,Autriche,"Couple, 2 children",net_average_tax_rate,100,0,15.66
-2000,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,23.71
-2001,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,24.46
-2002,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,24.43
-2003,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,23.43
-2004,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,21.98
-2005,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,22.12
-2006,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,22.12
-2007,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,22.15
-2008,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,22.57
-2009,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,22.41
-2010,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,23.55
-2011,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,23.72
-2012,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,23.56
-2013,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,23.01
-2014,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,22.94
-2015,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,22.57
-2016,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,20.91
-2017,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,20.86
-2018,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,20.44
-2019,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,19.39
-2020,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,19.17
-2021,BEL,Belgique,"Couple, 2 children",net_average_tax_rate,100,0,19.24
 2000,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,0,28.17
 2001,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,0,27.69
 2002,DNK,Danemark,"Couple, 2 children",net_average_tax_rate,100,0,27.29
@@ -1665,28 +1599,6 @@ Year,REF_AREA,Country,Household_type,Measure,INCOME_PRINCIPAL,INCOME_SPOUSE,Net_
 2019,AUT,Autriche,"Single person, no children",net_average_tax_rate,100,0,33.21
 2020,AUT,Autriche,"Single person, no children",net_average_tax_rate,100,0,32.71
 2021,AUT,Autriche,"Single person, no children",net_average_tax_rate,100,0,33.17
-2000,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,43.01
-2001,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.96
-2002,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.66
-2003,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,41.99
-2004,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,41.91
-2005,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,41.99
-2006,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,41.92
-2007,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.07
-2008,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.49
-2009,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.29
-2010,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.72
-2011,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.83
-2012,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.71
-2013,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.4
-2014,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.36
-2015,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,42.01
-2016,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,40.74
-2017,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,40.58
-2018,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,39.89
-2019,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,39.36
-2020,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,39.3
-2021,BEL,Belgique,"Single person, no children",net_average_tax_rate,100,0,39.48
 2000,DNK,Danemark,"Single person, no children",net_average_tax_rate,100,0,41.45
 2001,DNK,Danemark,"Single person, no children",net_average_tax_rate,100,0,40.64
 2002,DNK,Danemark,"Single person, no children",net_average_tax_rate,100,0,39.97
@@ -2215,28 +2127,6 @@ Year,REF_AREA,Country,Household_type,Measure,INCOME_PRINCIPAL,INCOME_SPOUSE,Net_
 2019,AUT,Autriche,"Couple, no children",net_average_tax_rate,100,67,30.98
 2020,AUT,Autriche,"Couple, no children",net_average_tax_rate,100,67,30.34
 2021,AUT,Autriche,"Couple, no children",net_average_tax_rate,100,67,30.83
-2000,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,41.98
-2001,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,41.99
-2002,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,41.66
-2003,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,40.44
-2004,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,39.46
-2005,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,39.55
-2006,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,39.46
-2007,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,39.6
-2008,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,40.01
-2009,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,39.77
-2010,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,40.25
-2011,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,40.36
-2012,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,40.23
-2013,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,39.88
-2014,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,39.81
-2015,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,39.4
-2016,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,37.85
-2017,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,37.71
-2018,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,36.83
-2019,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,36.17
-2020,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,36.09
-2021,BEL,Belgique,"Couple, no children",net_average_tax_rate,100,67,36.29
 2000,DNK,Danemark,"Couple, no children",net_average_tax_rate,100,67,39.85
 2001,DNK,Danemark,"Couple, no children",net_average_tax_rate,100,67,39.04
 2002,DNK,Danemark,"Couple, no children",net_average_tax_rate,100,67,38.36
@@ -2765,28 +2655,6 @@ Year,REF_AREA,Country,Household_type,Measure,INCOME_PRINCIPAL,INCOME_SPOUSE,Net_
 2019,AUT,Autriche,"Single person, no children",net_average_tax_rate,67,0,27.66
 2020,AUT,Autriche,"Single person, no children",net_average_tax_rate,67,0,26.82
 2021,AUT,Autriche,"Single person, no children",net_average_tax_rate,67,0,27.32
-2000,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.84
-2001,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.95
-2002,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.89
-2003,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,34.89
-2004,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,34.83
-2005,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.13
-2006,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.18
-2007,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.47
-2008,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,36.12
-2009,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.82
-2010,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,36.38
-2011,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,36.51
-2012,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,36.38
-2013,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.99
-2014,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.91
-2015,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,35.36
-2016,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,33.37
-2017,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,33.27
-2018,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,32.14
-2019,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,31.35
-2020,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,31.26
-2021,BEL,Belgique,"Single person, no children",net_average_tax_rate,67,0,31.55
 2000,DNK,Danemark,"Single person, no children",net_average_tax_rate,67,0,37.45
 2001,DNK,Danemark,"Single person, no children",net_average_tax_rate,67,0,36.66
 2002,DNK,Danemark,"Single person, no children",net_average_tax_rate,67,0,36.17

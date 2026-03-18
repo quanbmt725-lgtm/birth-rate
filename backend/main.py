@@ -21,8 +21,8 @@ app.add_middleware(
 # ========================================================================
 # Sử dụng đường dẫn tương đối để Render không bị lỗi tìm file
 BASE_DIR = os.path.dirname(__file__)
-MODEL_PATH = os.path.join(BASE_DIR, "model", "xgb_global.pkl")
-ENCODER_PATH = os.path.join(BASE_DIR, "model", "label_encoder.pkl")
+MODEL_PATH = os.path.join(BASE_DIR, "xgb_global.pkl")
+ENCODER_PATH = os.path.join(BASE_DIR, "label_encoder.pkl")
 
 try:
     xgb_model = joblib.load(MODEL_PATH)

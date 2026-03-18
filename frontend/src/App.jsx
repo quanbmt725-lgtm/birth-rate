@@ -31,6 +31,9 @@ function App() {
   const [aiResult, setAiResult] = useState(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
 
+  // ============================================================
+  // ĐÃ SỬA: HÀM GỌI API RENDER THAY VÌ LOCALHOST
+  // ============================================================
   const handleRunPrediction = async (isoCode) => {
     if (!isoCode || allData.length === 0) return;
     setIsAiLoading(true);
@@ -44,15 +47,20 @@ function App() {
         setIsAiLoading(false);
         return;
       }
-      const response = await fetch(`http://127.0.0.1:8000/predict`, {
+      
+      // SỬA LINK Ở ĐÂY
+      const response = await fetch(`https://birth-rate.onrender.com/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ history: historyForLag })
       });
+      
       const result = await response.json();
       if (result.status === "success") setAiResult(result.predicted_val);
     } catch (error) {
-      alert("Không thể kết nối tới Server AI");
+      // BÁO LỖI RÕ RÀNG HƠN CHO NGƯỜI DÙNG
+      alert("Server AI đang khởi động (Cold Start). Vui lòng đợi 30 giây rồi bấm thử lại nhé!");
+      console.error("Lỗi kết nối:", error);
     } finally {
       setIsAiLoading(false);
     }
@@ -137,12 +145,12 @@ function App() {
             {/* PHẦN RANKING SIDEBAR */}
             <div className="absolute right-0 top-0 h-full z-[40]">
                 <RankingSidebar 
-                    data={yearData} 
-                    prevYearData={prevYearData}
-                    selectedCountry={selectedCountry} 
-                    setSelectedCountry={setSelectedCountry}
-                    onCountryClick={handleCountryClick} 
-                    colorScale={colorScale}
+                  data={yearData} 
+                  prevYearData={prevYearData}
+                  selectedCountry={selectedCountry} 
+                  setSelectedCountry={setSelectedCountry}
+                  onCountryClick={handleCountryClick} 
+                  colorScale={colorScale}
                 />
             </div>
             

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import pandas as pd
 import os
+import traceback
 
 app = FastAPI()
 
@@ -11,7 +12,7 @@ app = FastAPI()
 # ========================================================================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Trong thực tế, bạn nên thay "*" bằng link Vercel của bạn
+    allow_origins=["*"],  
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -19,15 +20,18 @@ app.add_middleware(
 # ========================================================================
 # 2. NẠP MODEL VÀ ENCODER
 # ========================================================================
-# Sử dụng đường dẫn tương đối để Render không bị lỗi tìm file
 BASE_DIR = os.path.dirname(__file__)
+# Nếu file .pkl nằm cùng thư mục với main.py, dùng code này:
 MODEL_PATH = os.path.join(BASE_DIR, "xgb_global.pkl")
 ENCODER_PATH = os.path.join(BASE_DIR, "label_encoder.pkl")
+
+# (Nếu file .pkl nằm trong thư mục 'model', thì sửa thành:
+# MODEL_PATH = os.path.join(BASE_DIR, "model", "xgb_global.pkl")
+# ENCODER_PATH = os.path.join(BASE_DIR, "model", "label_encoder.pkl") )
 
 try:
     xgb_model = joblib.load(MODEL_PATH)
     le = joblib.load(ENCODER_PATH)
-    # Lấy danh sách cột mà model yêu cầu để sắp xếp cho đúng
     FEATURES_ORDER = xgb_model.get_booster().feature_names
     print(f"✅ Backend Ready! Model yêu cầu {len(FEATURES_ORDER)} features.")
 except Exception as e:
@@ -35,64 +39,63 @@ except Exception as e:
 
 @app.get("/")
 def home():
-    return {"message": "API Dự báo Tỷ lệ sinh đang hoạt động!"}
+    return {"message": "API AI đang chạy bình thường trên Render!"}
 
 # ========================================================================
-# 3. LOGIC DỰ BÁO CHÍNH
+# 3. LOGIC XỬ LÝ DỮ LIỆU CHỐNG LỖI
 # ========================================================================
 @app.post("/predict")
 async def get_prediction(request: Request):
     try:
         payload = await request.json()
-        history = payload.get("history") 
+        history = payload.get("history", [])
         
+        # Bẫy lỗi số 1: Thiếu dữ liệu
         if not history or len(history) < 3:
-            return {"status": "error", "message": "Dữ liệu không đủ 3 năm gần nhất."}
+            return {"status": "error", "message": f"Dữ liệu gửi lên chỉ có {len(history)} năm. AI cần đủ 3 năm 2019, 2020, 2021."}
 
-        # Chuyển dữ liệu từ Frontend gửi qua thành DataFrame
+        # Đưa vào Pandas DataFrame
         df = pd.DataFrame(history)
         
-        # Đảm bảo tên cột nhất quán (biến tất cả thành chữ thường để so khớp)
-        df.columns = [c.lower() for c in df.columns]
-        
-        # Sắp xếp theo năm để lấy Lag 1, 2, 3 chính xác
-        df = df.sort_values("year")
+        # Bẫy lỗi số 2: Xử lý chữ hoa/chữ thường đồng loạt
+        df.columns = [str(c).lower() for c in df.columns]
 
-        # Lấy giá trị birth_rate của 3 năm gần nhất (Lag)
+        # Kiểm tra xem có đủ các cột cần thiết không
+        if 'year' not in df.columns or 'birth_rate' not in df.columns:
+            return {"status": "error", "message": f"Dữ liệu gửi thiếu cột 'year' hoặc 'birth_rate'. Cột hiện có: {list(df.columns)}"}
+
+        # Sắp xếp theo năm để lấy lag
+        df = df.sort_values("year")
         lags = df['birth_rate'].values
         
-        # Lấy dòng dữ liệu mới nhất (năm 2021) làm base cho các chỉ số khác
+        # Lấy dòng mới nhất (2021)
         latest_row = df.iloc[-1].to_dict()
-        
-        # Xác định Area Code (REF_AREA)
-        area_code = latest_row.get('ref_area')
+        area_code = latest_row.get('ref_area', 'UNKNOWN')
 
-        # Xây dựng input_data khớp chính xác với FEATURES_ORDER của model
+        # Ghép data vào Model
         input_dict = {}
         for col in FEATURES_ORDER:
-            # Ưu tiên tính toán các cột Lag
             if col == "lag_1":
-                input_dict[col] = lags[-1] # Giá trị năm 2021
+                input_dict[col] = float(lags[-1])
             elif col == "lag_2":
-                input_dict[col] = lags[-2] # Giá trị năm 2020
+                input_dict[col] = float(lags[-2])
             elif col == "lag_3":
-                input_dict[col] = lags[-3] # Giá trị năm 2019
-            # Mã hóa quốc gia
+                input_dict[col] = float(lags[-3])
             elif col == "country_encoded":
                 try:
                     input_dict[col] = le.transform([area_code])[0]
                 except:
-                    input_dict[col] = 0 # Nếu quốc gia mới chưa có trong encoder
-            # Các cột kinh tế khác (GDP, CPI, v.v.)
+                    input_dict[col] = 0 # Nước lạ chưa train
             elif col in latest_row:
-                input_dict[col] = latest_row[col]
+                # Ép kiểu float phòng trường hợp Supabase trả về string
+                try:
+                    input_dict[col] = float(latest_row[col])
+                except:
+                    input_dict[col] = 0.0
             else:
-                input_dict[col] = 0.0 # Điền 0 nếu thiếu dữ liệu
+                input_dict[col] = 0.0 
 
-        # Tạo DataFrame đầu vào cuối cùng với thứ tự cột chuẩn
         X_predict = pd.DataFrame([input_dict])[FEATURES_ORDER]
-
-        # Thực hiện dự báo
         prediction = xgb_model.predict(X_predict)
         
         return {
@@ -102,10 +105,12 @@ async def get_prediction(request: Request):
         }
 
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        # Bẫy lỗi số 3: In ra toàn bộ lịch sử lỗi trên Terminal của Render
+        print("🔥 LỖI NGHIÊM TRỌNG TẠI BACKEND:")
+        traceback.print_exc()
+        return {"status": "error", "message": f"Server AI bị lỗi: {str(e)}"}
 
 if __name__ == "__main__":
     import uvicorn
-    # Trên Render, biến PORT sẽ được cấp tự động
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)

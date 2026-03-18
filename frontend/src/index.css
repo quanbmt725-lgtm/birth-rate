@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 1. Hiệu ứng xoay + nảy nhẹ (bounce) cho ngôi sao */
+@keyframes star-spin-bounce {
+  0% {
+    transform: rotate(0deg) scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: rotate(380deg) scale(1.1); /* Xoay lố và nảy */
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.star-rotate-animation {
+  animation: star-spin-bounce 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* 2. Hiệu ứng Glow (phát sáng hào quang) cho kết quả AI */
+@keyframes glow-fade {
+  0% {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  }
+}
+
+.ai-result-glow {
+  /* Thêm một pseudo-element để tạo hiệu ứng phát sáng phía sau chữ */
+  position: relative;
+}
+
+.ai-result-glow::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 1.5rem;
+  z-index: 0;
+  pointer-events: none;
+  animation: glow-fade 1.5s ease-out forwards;
+}
+
+/* 3. Hiệu ứng trượt nhẹ và hiện hình cho Delta card */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+/* 4. Hiệu ứng nút bấm "AI Thinking" đẹp hơn */
+@keyframes ai-thinking-pulse {
+  0% {
+    background-color: rgb(15 23 42); /* Slate 900 */
+  }
+  50% {
+    background-color: rgb(29 78 216); /* Blue 700 */
+  }
+  100% {
+    background-color: rgb(15 23 42); /* Slate 900 */
+  }
+}
+
+.animate-ai-thinking {
+  animation: ai-thinking-pulse 1.5s infinite;
+}

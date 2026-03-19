@@ -103,20 +103,20 @@ function App() {
   );
 
   return (
-    <div className="flex min-h-screen bg-white relative overflow-x-hidden" onMouseMove={handleMouseMove}>
+    <div className="flex h-screen bg-white overflow-hidden relative" onMouseMove={handleMouseMove}>
       
       {/* 1. MENU SIDEBAR */}
       <Menu activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* 2. MAIN CONTENT */}
-      <main className="flex-1 ml-20 max-md:ml-0 relative transition-all duration-500 bg-white">
+      <main className="flex-1 ml-20 relative transition-all duration-500 bg-white">
         
         {/* TAB MAP */}
         {activeTab === "map" && (
           <div className="w-full h-full relative animate-in fade-in duration-500">
             
             {/* TIÊU ĐỀ */}
-            <div className="absolute top-14 left-12 max-md:left-4 max-md:top-6 z-[20] pointer-events-none text-slate-900">
+            <div className="absolute top-14 left-12 z-[20] pointer-events-none text-slate-900">
               <h1 className="text-4xl font-black tracking-tighter uppercase italic leading-none">
                 Europe Birth Rate Analysis
               </h1>
@@ -126,9 +126,7 @@ function App() {
             </div>
 
             {/* PREDICTION WIDGET */}
-            <div className="absolute bottom-32 left-12 
-                max-md:left-1/2 max-md:-translate-x-1/2 
-                max-md:bottom-24 z-[50]">
+            <div className="absolute bottom-32 left-12 z-[50]">
               <PredictionWidget 
                 targetCountry={pinnedCountry} 
                 predictValue={aiResult}
@@ -145,8 +143,7 @@ function App() {
             />
 
             {/* PHẦN RANKING SIDEBAR */}
-            <div className="absolute right-0 top-0 h-full z-[40] 
-                max-md:w-full max-md:h-auto max-md:bottom-0 max-md:top-auto">
+            <div className="absolute right-0 top-0 h-full z-[40]">
                 <RankingSidebar 
                   data={yearData} 
                   prevYearData={prevYearData}
@@ -164,9 +161,7 @@ function App() {
             />
 
             {/* TIMELINE */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 
-                max-md:w-[90%] max-md:px-4 max-md:gap-3 max-md:bottom-4
-                flex items-center gap-6 bg-slate-900 p-4 px-10 rounded-full shadow-2xl z-[100]">
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-slate-900 p-4 px-10 rounded-full shadow-2xl z-[100]">
               <button onClick={() => setPlaying(!playing)} className="text-white hover:text-blue-400 transition-colors">
                 {playing ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
               </button>
@@ -182,11 +177,7 @@ function App() {
             </div>
 
             {/* LEGEND */}
-            <div className="absolute bottom-20 right-[360px] 
-                max-md:right-4 max-md:bottom-16 max-md:scale-90
-                bg-white/80 px-4 py-2 rounded-xl shadow text-[10px] 
-                flex items-center gap-3 z-[10] border border-slate-100 
-                font-bold uppercase text-slate-500">
+            <div className="absolute bottom-20 right-[360px] bg-white/80 px-4 py-2 rounded-xl shadow text-[10px] flex items-center gap-3 z-[10] border border-slate-100 font-bold uppercase text-slate-500">
               <span>6.0</span>
               <div className="h-1.5 w-32 bg-gradient-to-r from-[#d1fae5] via-[#60a5fa] to-[#1d4ed8] rounded-full" />
               <span>14.0+</span>

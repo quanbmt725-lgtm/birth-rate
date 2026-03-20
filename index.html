@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birth Rate Forecasting Dashboard</title>
+    <script src="src/data/data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --card-bg: rgba(23, 28, 38, 0.7);
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background: rgba(15, 20, 30, 0.95);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            z-index: 10;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: white;
+            outline: none;
+            width: 100%;
+        }
+
+        .country-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-right: -10px;
+            padding-right: 10px;
+        }
+
+        .country-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .country-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+
+        .country-item {
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .country-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .country-item.active {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--accent-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            border-radius: 24px;
+            height: 500px;
+            position: relative;
+        }
+
+        .forecast-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--accent-secondary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        /* Loading Overlay */
+        #loading {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Simulator Styles */
+        .sidebar-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .simulator-control {
+            margin-bottom: 20px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="logo-icon"></div>
+            <div class="logo-text">BirthVision AI</div>
+        </div>
+        <input type="text" class="search-box" placeholder="Search countries..." id="searchCountry">
+        <div class="country-list" id="countryList">
+            <!-- Countries will be injected here -->
+        </div>
+
+        <div class="sidebar-section">
+            <div class="stat-label" style="margin-bottom: 10px; font-size: 0.75rem;">Policy Simulator</div>
+            
+            <div class="simulator-control">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">
+                    <span>Gov Spending</span>
+                    <span id="govVal" style="color: var(--accent-primary)">+0%</span>
+                </div>
+                <input type="range" id="govSlider" min="-50" max="50" value="0" style="width: 100%;">
+            </div>
+
+            <div class="simulator-control">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">
+                    <span>Employment</span>
+                    <span id="empVal" style="color: var(--accent-primary)">+0%</span>
+                </div>
+                <input type="range" id="empSlider" min="-10" max="10" value="0" style="width: 100%;">
+            </div>
+
+            <div class="simulator-control">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">
+                    <span>Fertility Rate</span>
+                    <span id="fertVal" style="color: var(--accent-primary)">+0%</span>
+                </div>
+                <input type="range" id="fertSlider" min="-20" max="20" value="0" style="width: 100%;">
+            </div>
+            
+            <button onclick="resetSliders()" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px; border-radius: 8px; cursor: pointer; margin-top: 5px; font-size: 0.75rem; transition: all 0.2s;">Reset Policy</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h1 id="countryName">Global Trends</h1>
+            <p id="countryStatus">Predicting birth rate trajectory until 2028 with AI.</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Current Rate (2021)</div>
+                <div class="stat-value" id="currentRate">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Forecasted Rate (2028)</div>
+                <div class="stat-value" id="forecastedRate">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Forecast Change</div>
+                <div class="stat-value" id="trendPercent">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Model Error (MAE)</div>
+                <div class="stat-value" id="maeValue" style="font-size: 1.5rem;">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Model Confidence (R²)</div>
+                <div class="stat-value" id="r2Value" style="font-size: 1.5rem;">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Best AI Model</div>
+                <div class="stat-value" id="modelType" style="font-size: 1.5rem; color: var(--accent-primary);">--</div>
+            </div>
+        </div>
+
+        <div class="stat-card" style="margin-bottom: 40px; border-left: 4px solid var(--accent-secondary);">
+            <div class="stat-label">AI Qualitative Insight</div>
+            <div id="qualitativeInsight" style="font-size: 1.2rem; line-height: 1.6; color: #cbd5e1;">--</div>
+        </div>
+
+        <div class="chart-container">
+            <div class="forecast-badge">AI Predictive Model</div>
+            <canvas id="mainChart"></canvas>
+        </div>
+    </main>
+
+    <script>
+        let chart;
+        let forecastData = {};
+        let currentCountry = "";
+
+        function resetSliders() {
+            document.getElementById('govSlider').value = 0;
+            document.getElementById('empSlider').value = 0;
+            document.getElementById('fertSlider').value = 0;
+            document.getElementById('govVal').innerText = "+0%";
+            document.getElementById('empVal').innerText = "+0%";
+            document.getElementById('fertVal').innerText = "+0%";
+            updateSimulation();
+        }
+
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const id = e.target.id.replace('Slider', 'Val');
+                const val = parseInt(e.target.value);
+                document.getElementById(id).innerText = (val >= 0 ? '+' : '') + val + '%';
+                updateSimulation();
+            });
+        });
+
+        function updateSimulation() {
+            if (!currentCountry) return;
+            const data = forecastData[currentCountry];
+            const weights = data.impact_weights;
+            
+            const govShift = parseInt(document.getElementById('govSlider').value) / 100;
+            const empShift = parseInt(document.getElementById('empSlider').value) / 100;
+            const fertShift = parseInt(document.getElementById('fertSlider').value) / 100;
+
+            // Total impact per year (simplified linear sensitivity)
+            const totalImpact = (govShift * weights.gov_spending) + 
+                                (empShift * weights.emp_rate) + 
+                                (fertShift * weights.fertility);
+
+            const simulatedForecast = data.forecast.map((d, index) => {
+                // Compound impact over time (or simple linear shift)
+                const impactAccumulated = totalImpact * (index + 1) * 0.5; // Factor to keep it realistic
+                return {
+                    ...d,
+                    birth_rate: d.birth_rate + impactAccumulated
+                };
+            });
+
+            const current = data.history[data.history.length - 1].birth_rate;
+            const projected = simulatedForecast[simulatedForecast.length - 1].birth_rate;
+            const diff = projected - current;
+            const percentChange = ((diff / current) * 100).toFixed(1);
+
+            document.getElementById('forecastedRate').innerText = projected.toFixed(2);
+            document.getElementById('trendPercent').innerText = (diff >= 0 ? '+' : '') + percentChange + '%';
+            document.getElementById('trendPercent').style.color = diff >= 0 ? '#10b981' : '#ef4444';
+
+            updateChart(data, simulatedForecast);
+        }
+
+        async function init() {
+            try {
+                // Use data from script tag globally loaded
+                forecastData = forecastResults;
+                
+                renderCountryList();
+                const firstCountry = Object.keys(forecastData)[0];
+                selectCountry(firstCountry);
+                
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error('Failed to load data:', error);
+                alert("Data file missing. Please ensure web/src/data/data.js exists.");
+            }
+        }
+
+        function renderCountryList(filter = '') {
+            const list = document.getElementById('countryList');
+            list.innerHTML = '';
+            
+            Object.keys(forecastData).forEach(code => {
+                if (code.toLowerCase().includes(filter.toLowerCase())) {
+                    const item = document.createElement('div');
+                    item.className = 'country-item';
+                    item.id = `item-${code}`;
+                    item.innerHTML = `<span>${code}</span> <small style="opacity:0.5">${code}</small>`;
+                    item.onclick = () => selectCountry(code);
+                    list.appendChild(item);
+                }
+            });
+        }
+
+        function selectCountry(code) {
+            // Update UI
+            document.querySelectorAll('.country-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`item-${code}`).classList.add('active');
+            
+            currentCountry = code;
+            
+            // Reset slider UI without calling selectCountry again
+            document.getElementById('govSlider').value = 0;
+            document.getElementById('empSlider').value = 0;
+            document.getElementById('fertSlider').value = 0;
+            document.getElementById('govVal').innerText = "+0%";
+            document.getElementById('empVal').innerText = "+0%";
+            document.getElementById('fertVal').innerText = "+0%";
+
+            const data = forecastData[code];
+            document.getElementById('countryName').innerText = code;
+            
+            const current = data.history[data.history.length - 1].birth_rate;
+            const projected = data.forecast[data.forecast.length - 1].birth_rate;
+            const diff = projected - current;
+            const percentChange = ((diff / current) * 100).toFixed(1);
+
+            document.getElementById('currentRate').innerText = current.toFixed(2);
+            document.getElementById('forecastedRate').innerText = projected.toFixed(2);
+            document.getElementById('trendPercent').innerText = (diff >= 0 ? '+' : '') + percentChange + '%';
+            document.getElementById('trendPercent').style.color = diff >= 0 ? '#10b981' : '#ef4444';
+
+            document.getElementById('maeValue').innerText = data.metrics.mae.toFixed(4);
+            document.getElementById('r2Value').innerText = (data.metrics.r2 * 100).toFixed(1) + '%';
+            document.getElementById('modelType').innerText = data.metrics.model_type;
+            document.getElementById('qualitativeInsight').innerText = data.insight;
+
+            updateChart(data, data.forecast);
+        }
+
+        function updateChart(data, forecastToDisplay) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            
+            const historyLabels = data.history.map(d => d.Year);
+            const historyValues = data.history.map(d => d.birth_rate);
+            
+            const forecastLabels = forecastToDisplay.map(d => d.Year);
+            const forecastValues = forecastToDisplay.map(d => d.birth_rate);
+
+            const labels = [...historyLabels, ...forecastLabels];
+            
+            // Padding the forecast line to connect with history
+            const forecastReady = [historyValues[historyValues.length - 1], ...forecastValues];
+            const historyDataset = Array(labels.length).fill(null);
+            const forecastDataset = Array(labels.length).fill(null);
+
+            // Fill history
+            historyValues.forEach((v, i) => historyDataset[i] = v);
+            // Fill forecast (starts from the last point of history)
+            forecastReady.forEach((v, i) => forecastDataset[historyValues.length - 1 + i] = v);
+
+            if (chart) chart.destroy();
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Historical Data',
+                            data: historyDataset,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#3b82f6'
+                        },
+                        {
+                            label: 'AI Forecast',
+                            data: forecastDataset,
+                            borderColor: '#8b5cf6',
+                            borderDash: [5, 5],
+                            backgroundColor: 'rgba(139, 92, 246, 0.05)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#8b5cf6'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 20, 30, 0.9)',
+                            padding: 12,
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 14 },
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('searchCountry').oninput = (e) => {
+            renderCountryList(e.target.value);
+        };
+
+        init();
+    </script>
+</body>
+</html>

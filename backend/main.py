@@ -24,9 +24,9 @@ try:
     xgb_model = joblib.load(os.path.join(MODEL_DIR, "xgb_global.pkl"))
     le = joblib.load(os.path.join(MODEL_DIR, "label_encoder.pkl"))
     FEATURES_ORDER = xgb_model.get_booster().feature_names
-    print(f"✅ Model Ready! Cần {len(FEATURES_ORDER)} cột features.")
+    print(f" Model Ready! Cần {len(FEATURES_ORDER)} cột features.")
 except Exception as e:
-    print(f"❌ Lỗi nạp file: {e}")
+    print(f" Lỗi nạp file: {e}")
 
 @app.get("/")
 def home():
@@ -95,7 +95,7 @@ async def get_prediction(data: PredictionInput):
 
         # DỰ BÁO
         prediction = xgb_model.predict(X_predict)
-        print(f"✅ Dự báo thành công cho {latest_row[area_key]}: {prediction[0]}")
+        print(f" Dự báo thành công cho {latest_row[area_key]}: {prediction[0]}")
 
         return {
             "status": "success",
@@ -104,7 +104,7 @@ async def get_prediction(data: PredictionInput):
         }
 
     except Exception as e:
-        print("🔥 LỖI TẠI SERVER:")
+        print(" LỖI TẠI SERVER:")
         traceback.print_exc()
         return {"status": "error", "message": str(e)}
 
@@ -115,4 +115,5 @@ if __name__ == "__main__":
     import uvicorn
     # Render yêu cầu host 0.0.0.0 và tự cấp Port
     port = int(os.environ.get("PORT", 10000))
+
     uvicorn.run(app, host="0.0.0.0", port=port)

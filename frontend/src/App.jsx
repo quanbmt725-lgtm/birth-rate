@@ -10,6 +10,8 @@ import FloatingChartCard from "./components/FloatingChartCard";
 import PredictionWidget from "./components/PredictionWidget";
 import Menu from "./components/Menu"; 
 import DeepAnalysis from "./components/DeepAnalysis"; 
+import DataSource from "./components/DataSource";
+import Information from "./components/Information";
 
 const colorScale = scaleLinear()
   .domain([6, 10, 14])
@@ -48,7 +50,6 @@ function App() {
         return;
       }
       
-      // SỬA LINK Ở ĐÂY
       const response = await fetch(`https://birth-rate.onrender.com/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -58,7 +59,6 @@ function App() {
       const result = await response.json();
       if (result.status === "success") setAiResult(result.predicted_val);
     } catch (error) {
-      // BÁO LỖI RÕ RÀNG HƠN CHO NGƯỜI DÙNG
       alert("Server AI đang khởi động (Cold Start). Vui lòng đợi 30 giây rồi bấm thử lại nhé!");
       console.error("Lỗi kết nối:", error);
     } finally {
@@ -184,16 +184,29 @@ function App() {
             </div>
           </div>
         )}
+        {/* TAB INFORMATION */}
+        {activeTab === "info" && (
+          <div className="w-full h-full overflow-y-auto bg-slate-50">
+            <Information />
+          </div>
+        )}
 
-        {/* TAB DEEP ANALYSIS - Đã thêm prop data={allData} */}
+        {/* TAB DEEP ANALYSIS */}
         {activeTab === "analysis" && (
           <div className="w-full h-full overflow-y-auto bg-slate-50">
              <DeepAnalysis data={allData} />
           </div>
         )}
 
-        {/* CÁC TAB KHÁC */}
-        {["data", "layers", "settings"].includes(activeTab) && (
+        {/* TAB DATA - Chỉ render DataSource, không truyền allData nữa */}
+        {activeTab === "data" && (
+          <div className="w-full h-full overflow-y-auto bg-slate-50">
+            <DataSource />
+          </div>
+        )}
+
+        {/* CÁC TAB KHÁC (info, settings) giữ nguyên placeholder */}
+        {["info", "settings"].includes(activeTab) && (
           <div className="flex items-center justify-center h-full text-slate-300 font-black uppercase text-3xl italic">
             {activeTab} Content Coming Soon
           </div>

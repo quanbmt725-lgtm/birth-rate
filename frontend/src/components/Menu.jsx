@@ -10,10 +10,11 @@ import {
 } from "lucide-react";
 
 const menuItems = [
+  { id: "info", label: "Information", icon: <Layers size={22} /> },
   { id: "map", label: "Map", icon: <LayoutDashboard size={22} /> },
   { id: "analysis", label: "Deep Analysis", icon: <BarChart3 size={22} /> },
-  // { id: "data", label: "Data Source", icon: <Database size={22} /> },
-  // { id: "layers", label: "Map Layers", icon: <Layers size={22} /> },
+  { id: "data", label: "Data", icon: <Database size={22} /> },
+  
 ];
 
 export default function Menu({ activeTab, setActiveTab }) {

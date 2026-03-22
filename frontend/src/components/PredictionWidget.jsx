@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../supabase"; 
 import { Sparkles, TrendingUp, TrendingDown, RefreshCw, Zap } from "lucide-react";
 
-// Component con xử lý hiệu ứng số chạy
+// ✅ FIX 1: AnimatedNumber chống crash tuyệt đối
 const AnimatedNumber = ({ value, duration = 1500 }) => {
   const [currentValue, setCurrentValue] = useState(0);
 
   useEffect(() => {
-    if (value === null) return;
-    
+    // ❗ chặn toàn bộ case lỗi
+    if (value === null || value === undefined || isNaN(value)) return;
+
     let startTimestamp = null;
     const endValue = Number(value);
-    
+
+    // ❗ chặn NaN / Infinity
+    if (!isFinite(endValue)) return;
+
     if (endValue === 0) {
       setCurrentValue(0);
       return;
@@ -20,23 +24,25 @@ const AnimatedNumber = ({ value, duration = 1500 }) => {
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      
+
       const easedProgress = 1 - (1 - progress) * (1 - progress);
-      
+
       setCurrentValue(easedProgress * endValue);
-      
+
       if (progress < 1) {
-        window.requestAnimationFrame(step);
+        requestAnimationFrame(step);
       } else {
         setCurrentValue(endValue);
       }
     };
-    
-    window.requestAnimationFrame(step);
+
+    requestAnimationFrame(step);
   }, [value, duration]);
 
-  if (value === null) return "--";
-  return currentValue.toFixed(2);
+  // ❗ render fallback an toàn
+  if (value === null || value === undefined || isNaN(value)) return "--";
+
+  return Number(currentValue).toFixed(2);
 };
 
 export default function PredictionWidget({ targetCountry, predictValue, loadingAI, onPredict }) {
@@ -44,7 +50,7 @@ export default function PredictionWidget({ targetCountry, predictValue, loadingA
   const [actualValue, setActualValue] = useState(null);
   const [isShowingResults, setIsShowingResults] = useState(false);
 
-  // 1. TỰ ĐỘNG LẤY SỐ THỰC TẾ 2022
+  // 1. LẤY DATA
   useEffect(() => {
     const fetchActualData = async () => {
       if (!targetCountry) {
@@ -64,11 +70,15 @@ export default function PredictionWidget({ targetCountry, predictValue, loadingA
           .eq("REF_AREA", targetCountry)
           .limit(1);
 
+        // ✅ FIX 2: chống undefined
         if (data && data.length > 0) {
-          setActualValue(data[0].birth_rate);
+          setActualValue(data[0]?.birth_rate ?? null);
+        } else {
+          setActualValue(null);
         }
       } catch (error) {
-        console.error("Lỗi lấy dữ liệu Supabase:", error);
+        console.error("Lỗi Supabase:", error);
+        setActualValue(null);
       } finally {
         setLoadingActual(false);
       }
@@ -77,16 +87,23 @@ export default function PredictionWidget({ targetCountry, predictValue, loadingA
     fetchActualData();
   }, [targetCountry]);
 
-  // 2. KHI AI TRẢ VỀ KẾT QUẢ, HIỆN CẢ 2 SỐ CÙNG LÚC
+  // 2. SHOW RESULT
   useEffect(() => {
-    if (predictValue !== null && !loadingAI) {
+    if (
+      predictValue !== null &&
+      predictValue !== undefined &&
+      !loadingAI
+    ) {
       setIsShowingResults(true);
     }
   }, [predictValue, loadingAI]);
 
-  // Tính Delta
-  const delta = (predictValue !== null && actualValue !== null) 
-    ? (predictValue - actualValue) 
+  // ✅ FIX 3: delta an toàn
+  const safePredict = (!isNaN(predictValue) && predictValue !== null) ? Number(predictValue) : null;
+  const safeActual = (!isNaN(actualValue) && actualValue !== null) ? Number(actualValue) : null;
+
+  const delta = (safePredict !== null && safeActual !== null)
+    ? (safePredict - safeActual)
     : 0;
 
   return (
@@ -112,12 +129,12 @@ export default function PredictionWidget({ targetCountry, predictValue, loadingA
         </div>
       </div>
 
-      {/* DỮ LIỆU HIỂN THỊ */}
+      {/* DATA */}
       <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-5 mt-1">
         <div className="flex flex-col">
           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Actual 2022</p>
           <span className="text-3xl font-black text-slate-800 tabular-nums leading-none mt-1">
-            {isShowingResults ? <AnimatedNumber value={actualValue} /> : "--"}
+            {isShowingResults && safeActual !== null ? <AnimatedNumber value={safeActual} /> : "--"}
           </span>
           <p className="text-[8px] text-blue-500 font-bold uppercase italic mt-2 leading-none">Supabase Live</p>
         </div>
@@ -125,13 +142,13 @@ export default function PredictionWidget({ targetCountry, predictValue, loadingA
         <div className={`flex flex-col border-l border-slate-100 pl-4 relative ${isShowingResults && 'ai-result-glow'}`}>
           <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest">AI Predict</p>
           <span className={`text-3xl font-black tabular-nums leading-none mt-1 ${loadingAI ? 'animate-pulse text-blue-300' : 'text-blue-600'}`}>
-            {isShowingResults ? <AnimatedNumber value={predictValue} /> : "--"}
+            {isShowingResults && safePredict !== null ? <AnimatedNumber value={safePredict} /> : "--"}
           </span>
           <p className="text-[8px] text-blue-400 font-bold uppercase italic mt-2 leading-none tracking-tighter relative z-10">FastAPI (XGBoost)</p>
         </div>
       </div>
 
-      {/* NÚT BẤM & DELTA */}
+      {/* BUTTON + DELTA */}
       <div className="mt-2 flex flex-col gap-3">
         <button 
           onClick={() => onPredict(targetCountry)}

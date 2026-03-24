@@ -353,7 +353,7 @@ export default function Information() {
               OECD Data Explorer
             </h3>
             <p className="text-slate-500 font-medium leading-relaxed mb-6">
-              Core demographic indicators, including total fertility rates and birth trends, are sourced directly from the OECD's official open dataset.
+              Provides key data on fertility rates, household expenditure, government spending, taxation, and other demographic and economic indicators. These datasets support data visualization and enable comprehensive analysis throughout the project.
             </p>
             <a href="https://data-explorer.oecd.org/" target="_blank" rel="noopener noreferrer"
                className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 group-hover:text-blue-700 transition-colors">
@@ -364,10 +364,10 @@ export default function Information() {
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow group">
             <h3 className="text-xl font-bold text-slate-800 mb-3 flex items-center gap-3">
               <BarChart2 size={24} className="text-emerald-500" />
-              World Bank Data
+              Our World in Data
             </h3>
             <p className="text-slate-500 font-medium leading-relaxed mb-6">
-              Supplementary socioeconomic data used to train the Machine Learning model is aggregated from World Bank's global repositories.
+              The design and animation of this website are inspired by Our World in Data, with a focus on the interactive timeline feature that allows users to explore how country-level indicators increase or decrease over time.
             </p>
             <a href="https://ourworldindata.org/grapher/children-per-woman-un?time=2022" target="_blank" rel="noopener noreferrer"
                className="inline-flex items-center gap-2 text-sm font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors">
